@@ -14,22 +14,21 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ListView;
+
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.GetMeThere.GetMeThereLogin.Activity.Transport_Activity;
 import com.GetMeThere.GetMeThereLogin.models.ServerRequest;
 import com.GetMeThere.GetMeThereLogin.models.ServerResponse;
 import com.GetMeThere.GetMeThereLogin.models.User;
-import com.google.gson.JsonArray;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,6 +52,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Url;
 
+import static com.GetMeThere.GetMeThereLogin.R.id.btn_transport;
+
 //We will use a navigation drawer to overcome the issue Eman is facing with the passing of the JSON file.
 // ALter Json output to be implemented with a button push
 // Use a draw to display option of time tables
@@ -63,7 +64,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
     private TextView tv_name,tv_class,tv_class2,tv_message,tv_date;
     private SharedPreferences pref;
     private long date = System.currentTimeMillis();
-    private AppCompatButton btn_change_password,btn_logout,btn_show_class,btn_show_map;
+    private AppCompatButton btn_change_password;
+    private AppCompatButton btn_logout;
     private EditText et_old_password,et_new_password;
     private AlertDialog dialog;
     private ProgressBar progress;
@@ -105,7 +107,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         protected void onPreExecute() {
          
         }
-        // Change is here
+
         @Override
         protected String doInBackground(Void... voids) {
             try {
@@ -156,39 +158,42 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
 
         @Override
         protected void onPostExecute(String result) {
+          //tv_class.setText(result);
             tv_class.setText(J_STRING1);
             tv_class2.setText(J_STRING2);
         }
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile,container,false);
         initViews(view);
+
+        View.OnClickListener listnr = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), Transport_Activity.class);
+                startActivity(intent);
+            }
+        };
+        AppCompatButton btn =(AppCompatButton) view.findViewById(R.id.btn_transport);
+        btn.setOnClickListener(listnr);
         return view;
+
     }
 
-
-
-
     private void initViews(View view){
+        new BackgroundTask().execute();
         tv_name = (TextView)view.findViewById(R.id.tv_name);
         tv_date = (TextView)view.findViewById(R.id.tv_date);
         tv_class = (TextView)view.findViewById(R.id.tv_class);
         tv_class2 = (TextView)view.findViewById(R.id.tv_class2);
         btn_change_password = (AppCompatButton)view.findViewById(R.id.btn_chg_password);
         btn_logout = (AppCompatButton)view.findViewById(R.id.btn_logout);
-        btn_show_class = (AppCompatButton)view.findViewById(R.id.btn_show_class);
-        btn_show_map = (AppCompatButton)view.findViewById(R.id.btn_show_map);
-        btn_show_map.setOnClickListener(this);
-        btn_show_class.setOnClickListener(this);
         btn_change_password.setOnClickListener(this);
         btn_logout.setOnClickListener(this);
-
     }
-
-
+    
     private void showDialog(){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -232,22 +237,16 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
                 }
             });
     }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.btn_show_map:
-                Intent intent = new Intent(getActivity(), MapsActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.btn_show_class:
-                new BackgroundTask().execute();
-                break;
             case R.id.btn_chg_password:
                 showDialog();
                 break;
             case R.id.btn_logout:
                 logout();
+                break;
+            case R.id.btn_transport:
                 break;
         }
     }
@@ -269,6 +268,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         ft.replace(R.id.fragment_frame,login);
         ft.commit();
     }
+
     private void changePasswordProcess(String email,String old_password,String new_password){
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -318,6 +318,5 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
             }
         });
     }
-
 
 }
