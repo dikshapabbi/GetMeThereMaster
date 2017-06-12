@@ -40,14 +40,6 @@
             android:value="@string/google_maps_key" />
 
         <activity android:name=".Activity.PDF_Activity" />
-       <activity android:name=".Activity.Notification_Activity"/>
-
-        <receiver android:name=".AlarmReceiver"></receiver>
-        <intent-filter>
-            <action android:name="android.intent.action.BOOT_COMPLETED">
-            </action>
-        </intent-filter>
-
     </application>
 
 </manifest>
