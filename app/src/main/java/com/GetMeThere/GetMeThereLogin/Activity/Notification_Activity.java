@@ -11,6 +11,7 @@ import android.os.Bundle;
 
 import com.GetMeThere.GetMeThereLogin.R;
 
+
 public class Notification_Activity extends AppCompatActivity {
 
     @Override
@@ -21,8 +22,8 @@ public class Notification_Activity extends AppCompatActivity {
         //alarmService
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
-        Intent notificationIntent = new Intent("android.media.action.DISPLAY_NOTIFICATION");
-        notificationIntent.addCategory("android.intent.category.DEFAULT");
+        Intent notificationIntent = new Intent("android.intent.action.MAIN");
+        notificationIntent.addCategory("android.intent.category.LAUNCHER");
 
         int requestCode = 100;
         PendingIntent broadcast= PendingIntent.getBroadcast(this, requestCode, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);

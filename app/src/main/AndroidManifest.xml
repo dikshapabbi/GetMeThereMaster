@@ -19,30 +19,35 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+
         <!--
        Change the activity here to MainActivity when running the APP otherwise it will show the
        maps all the time
         -->
         <activity android:name=".MainActivity"> <!-- activity android:name=".MainActivity" -->
             maps all the time -->
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.media.action.IMAGE_CAPTURE" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+
         <activity android:name=".Activity.PDF_Activity" />
        <activity android:name=".Activity.Notification_Activity"/>
-        <receiver android:name=".AlarmReceiver">
-            <intent-filter>
-                <action android:name="android.media.action.DISPLAY_NOTIFICATION" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </receiver>
+
+        <receiver android:name=".AlarmReceiver"></receiver>
+        <intent-filter>
+            <action android:name="android.intent.action.BOOT_COMPLETED">
+            </action>
+        </intent-filter>
+
     </application>
 
 </manifest>
